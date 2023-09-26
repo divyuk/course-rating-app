@@ -73,6 +73,23 @@ app.post("/courses/:id/ratings", (req, res) => {
   });
 });
 
+app.put("/courses/:id", (req, res) => {
+  const ID = req.params.id;
+  const writePath = path.join(__dirname, "courses.json");
+  const userProvidedDetails = req.body;
+  const updatedDetails = courses.map((obj) => {
+    if (obj.courseId == ID) return { ...obj, ...userProvidedDetails };
+
+    return obj;
+  });
+  const jsonData = JSON.stringify(updatedDetails);
+
+  fs.writeFile(writePath, jsonData, (err) => {
+    if (err) res.status(500).send("Something went wrong...");
+    else res.status(201).send("Course Modified!");
+  });
+});
+
 app.listen(PORT, (error) => {
   if (error) {
     console.log("something went wrong while starting the server");
