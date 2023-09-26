@@ -54,6 +54,25 @@ app.post("/courses", (req, res) => {
     res.status(400).json(validator.validateCourseInfo(userProvidedDetails));
 });
 
+app.post("/courses/:id/ratings", (req, res) => {
+  const ID = req.params.id;
+  const writePath = path.join(__dirname, "courses.json");
+  const userProvidedRating = req.body.rating;
+
+  // Update the course with the provided ID
+  const updatedCourses = courses.map((obj) => {
+    if (obj.courseId == ID) obj.rating = userProvidedRating;
+    return obj; // Always return the object
+  });
+
+  const jsonData = JSON.stringify(updatedCourses);
+
+  fs.writeFile(writePath, jsonData, (err) => {
+    if (err) res.status(500).send("Something went wrong...");
+    else res.status(201).send("Rating added!");
+  });
+});
+
 app.listen(PORT, (error) => {
   if (error) {
     console.log("something went wrong while starting the server");
