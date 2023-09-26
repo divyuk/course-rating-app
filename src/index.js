@@ -10,7 +10,7 @@ const PORT = 3000;
 // Parse application/json
 app.use(express.json());
 // Parse application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: false }));
+// app.use(express.urlencoded({ extended: false }));
 
 app.get("/", (req, res) => {
   res.status(200).send("Hello World");
